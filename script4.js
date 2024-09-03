@@ -5,14 +5,31 @@ document.getElementById('addQuestion').addEventListener('click', function() {
     const questionItem = document.createElement('div');
     questionItem.className = 'question-item';
     questionItem.innerHTML = `
-      <h3>Question ${questionIndex + 1}</h3>
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
-    <input type="text" name="question${questionIndex}" placeholder="Question text" required style="flex-basis: 100%;">
-    <input type="text" name="option1_${questionIndex}" placeholder="Option 1" required style="flex-basis: calc(25% - 10px);">
-    <input type="text" name="option2_${questionIndex}" placeholder="Option 2" required style="flex-basis: calc(25% - 10px);">
-    <input type="text" name="option3_${questionIndex}" placeholder="Option 3" required style="flex-basis: calc(25% - 10px);">
-    <input type="text" name="option4_${questionIndex}" placeholder="Option 4" required style="flex-basis: calc(25% - 10px);">
+     <h3>Question ${questionIndex + 1}</h3>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+    <input type="text" name="question${questionIndex}" placeholder="Question text" required style="width: 100%;">
+    
+    <div style="display: flex; align-items: center;">
+        <label for="option1_${questionIndex}" style="margin-right: 10px;">Option 1:</label>
+        <input type="text" id="option1_${questionIndex}" name="option1_${questionIndex}" placeholder="Enter option 1" required style="flex: 1;">
+    </div>
+    
+    <div style="display: flex; align-items: center;">
+        <label for="option2_${questionIndex}" style="margin-right: 10px;">Option 2:</label>
+        <input type="text" id="option2_${questionIndex}" name="option2_${questionIndex}" placeholder="Enter option 2" required style="flex: 1;">
+    </div>
+    
+    <div style="display: flex; align-items: center;">
+        <label for="option3_${questionIndex}" style="margin-right: 10px;">Option 3:</label>
+        <input type="text" id="option3_${questionIndex}" name="option3_${questionIndex}" placeholder="Enter option 3" required style="flex: 1;">
+    </div>
+    
+    <div style="display: flex; align-items: center;">
+        <label for="option4_${questionIndex}" style="margin-right: 10px;">Option 4:</label>
+        <input type="text" id="option4_${questionIndex}" name="option4_${questionIndex}" placeholder="Enter option 4" required style="flex: 1;">
+    </div>
 </div>
+
 <label for="correctOption_${questionIndex}">Correct Option:</label>
 <select name="correctOption_${questionIndex}" required>
     <option value="1">Option 1</option>
@@ -21,7 +38,7 @@ document.getElementById('addQuestion').addEventListener('click', function() {
     <option value="4">Option 4</option>
 </select>
 <br><br>
- 
+
        `;
     questionsContainer.appendChild(questionItem);
 });
