@@ -5,21 +5,24 @@ document.getElementById('addQuestion').addEventListener('click', function() {
     const questionItem = document.createElement('div');
     questionItem.className = 'question-item';
     questionItem.innerHTML = `
-        <h3>Question ${questionIndex + 1}</h3>
-        <input type="text" name="question${questionIndex}" placeholder="Question text" required>
-        <input type="text" name="option1_${questionIndex}" placeholder="Option 1" required>
-        <input type="text" name="option2_${questionIndex}" placeholder="Option 2" required>
-        <input type="text" name="option3_${questionIndex}" placeholder="Option 3" required>
-        <input type="text" name="option4_${questionIndex}" placeholder="Option 4" required>
-        <label for="correctOption_${questionIndex}">Correct Option:</label>
-        <select name="correctOption_${questionIndex}" required>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-            <option value="4">Option 4</option>
-        </select>
-        <br><br>
-    `;
+      <h3>Question ${questionIndex + 1}</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+    <input type="text" name="question${questionIndex}" placeholder="Question text" required style="flex-basis: 100%;">
+    <input type="text" name="option1_${questionIndex}" placeholder="Option 1" required style="flex-basis: calc(25% - 10px);">
+    <input type="text" name="option2_${questionIndex}" placeholder="Option 2" required style="flex-basis: calc(25% - 10px);">
+    <input type="text" name="option3_${questionIndex}" placeholder="Option 3" required style="flex-basis: calc(25% - 10px);">
+    <input type="text" name="option4_${questionIndex}" placeholder="Option 4" required style="flex-basis: calc(25% - 10px);">
+</div>
+<label for="correctOption_${questionIndex}">Correct Option:</label>
+<select name="correctOption_${questionIndex}" required>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
+    <option value="4">Option 4</option>
+</select>
+<br><br>
+ 
+       `;
     questionsContainer.appendChild(questionItem);
 });
 
