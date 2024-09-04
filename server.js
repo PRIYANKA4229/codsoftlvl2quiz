@@ -1,43 +1,45 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
-// Create an Express app
+// Initialize the app
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors());
 
-// Connect to MongoDB
-mongoose.connect('mongodb+srv://himongo:<db_password>@cluster0.jwa7u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+// MongoDB connection
+const uri = 'mongodb+srv://himongo:<db_password>@cluster0.jwa7u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Replace with your MongoDB Atlas connection string
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
-// Define a Quiz schema and model
+// Quiz Schema
 const quizSchema = new mongoose.Schema({
     topic: String,
-    questions: [
-        {
-            question: String,
-            options: [String],
-            correctOption: Number
-        }
-    ]
+    questions: [{
+        question: String,
+        options: [String],
+        correctOption: Number
+    }]
 });
 
 const Quiz = mongoose.model('Quiz', quizSchema);
 
-// Route to save a quiz
+// Routes
+// Route to save a new quiz
 app.post('/quizzes', async (req, res) => {
+    const { topic, questions } = req.body;
+
     try {
-        const quiz = new Quiz(req.body);
-        await quiz.save();
-        res.status(201).send('Quiz saved successfully!');
-    } catch (error) {
-        console.error('Error saving quiz:', error);
-        res.status(500).send('Error saving quiz.');
+        const newQuiz = new Quiz({ topic, questions });
+        await newQuiz.save();
+        res.status(201).json({ message: 'Quiz saved successfully!' });
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to save quiz.', error: err });
     }
 });
 
@@ -45,14 +47,13 @@ app.post('/quizzes', async (req, res) => {
 app.get('/quizzes', async (req, res) => {
     try {
         const quizzes = await Quiz.find();
-        res.json(quizzes);
-    } catch (error) {
-        console.error('Error fetching quizzes:', error);
-        res.status(500).send('Error fetching quizzes.');
+        res.status(200).json(quizzes);
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to fetch quizzes.', error: err });
     }
 });
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server running on port ${port}`);
 });
