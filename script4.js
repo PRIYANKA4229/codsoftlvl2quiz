@@ -8,8 +8,8 @@ document.getElementById('addQuestion').addEventListener('click', function() {
         <h3>Question ${questionIndex + 1}</h3>
         <div>
             <div style="margin-bottom: 10px;">
-                <label for="question_${questionIndex}">Question:</label>
-                <input type="text" id="question_${questionIndex}" name="question_${questionIndex}" placeholder="Enter question" required>
+                <label for="question${questionIndex}">Question Text:</label>
+                <input type="text" id="question${questionIndex}" name="question${questionIndex}" placeholder="Enter question text" required>
             </div>
             <div style="margin-bottom: 10px;">
                 <label for="option1_${questionIndex}">Option 1:</label>
@@ -49,7 +49,7 @@ document.getElementById('quizForm').addEventListener('submit', async function(ev
     const questionsContainer = document.getElementById('questionsContainer');
 
     Array.from(questionsContainer.children).forEach((questionItem, index) => {
-        const questionText = questionItem.querySelector(`input[name="question_${index}"]`).value;
+        const questionText = questionItem.querySelector(`input[name="question${index}"]`).value;
         const options = Array.from(questionItem.querySelectorAll('input[type="text"]'))
             .map(input => input.value);
         const correctOption = questionItem.querySelector(`select[name="correctOption_${index}"]`).value;
@@ -64,7 +64,7 @@ document.getElementById('quizForm').addEventListener('submit', async function(ev
     const quiz = { topic, questions };
 
     try {
-        const response = await fetch('https://your-backend-url/quizzes', { // Replace with your actual backend URL
+        const response = await fetch('https://your-backend-url/quizzes', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,11 +76,9 @@ document.getElementById('quizForm').addEventListener('submit', async function(ev
             alert('Quiz saved successfully!');
             window.location.href = 'quiz-selection.html';
         } else {
-            const errorText = await response.text();
-            alert(`Failed to save quiz: ${errorText}`);
+            alert('Failed to save quiz.');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('An error occurred while saving the quiz.');
     }
 });
