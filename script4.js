@@ -42,8 +42,8 @@ document.getElementById('addQuestion').addEventListener('click', function() {
     questionsContainer.appendChild(questionItem);
 });
 
-// Save quiz to local storage
-document.getElementById('quizForm').addEventListener('submit', function(event) {
+// Save quiz to MongoDB
+document.getElementById('quizForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const topic = document.getElementById('topic').value;
@@ -64,10 +64,23 @@ document.getElementById('quizForm').addEventListener('submit', function(event) {
     });
 
     const quiz = { topic, questions };
-    let quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
-    quizzes.push(quiz);
-    localStorage.setItem('quizzes', JSON.stringify(quizzes));
 
-    alert('Quiz saved successfully!');
-    window.location.href = 'quiz-selection.html';
+    try {
+        const response = await fetch('http://localhost:5000/quizzes', { // Update this URL to your backend URL
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(quiz)
+        });
+
+        if (response.ok) {
+            alert('Quiz saved successfully!');
+            window.location.href = 'quiz-selection.html';
+        } else {
+            alert('Failed to save quiz.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
 });
